@@ -1,4 +1,8 @@
-# FastAPI Calculator
+# 🧮 FastAPI Calculator
+
+> A full-stack calculator built with FastAPI and JavaScript.
+
+**🌐 [Live Demo](https://fastapi-calculator-epil.onrender.com)**
 
 A small calculator application built with FastAPI. It serves a browser-based calculator UI and evaluates expressions through a backend API using Python's `ast` module.
 
