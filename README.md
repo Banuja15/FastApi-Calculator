@@ -1,50 +1,51 @@
 # FastAPI Calculator
 
-A simple calculator web application built with FastAPI. The app serves a static HTML/CSS/JavaScript frontend and evaluates arithmetic expressions on the backend using Python's `ast` module.
+A small calculator application built with FastAPI. It serves a browser-based calculator UI and evaluates expressions through a backend API using Python's `ast` module.
 
 ## Features
 
-- Basic arithmetic operations: addition, subtraction, multiplication, and division
+- Arithmetic support for `+`, `-`, `*`, and `/`
 - Parentheses support
-- Simple web-based calculator UI
-- FastAPI backend with JSON-based calculation endpoint
-- Error handling for invalid expressions and division by zero
-
-## Technologies Used
-
-- Python
-- FastAPI
-- HTML/CSS/JavaScript
-- Python `ast` evaluator
+- Frontend calculator UI with buttons and display
+- REST API endpoint for expression evaluation
+- Division-by-zero handling
+- Basic validation for invalid expressions
 
 ## Project Structure
 
 ```text
-fastapi-calculator/
+Fastapi_calculator/
+├── .gitignore
+├── .python-version
 ├── pyproject.toml
 ├── README.md
 ├── src/
 │   └── fastapi_calculator/
 │       ├── __init__.py
 │       ├── main.py
-│       ├── application.py
-│       ├── Operation.py
+│       ├── service.py
 │       └── static/
 │           ├── index.html
 │           ├── script.js
 │           └── style.css
 ```
 
+## Application Behavior
+
+- The root route serves the calculator frontend from `static/index.html`.
+- The frontend sends POST requests to `/calculate` with a JSON body.
+- The backend evaluates the expression and returns the result.
+- A `ZeroDivisionError` is converted into an HTTP 400 error response.
+
 ## Requirements
 
 - Python 3.14+
-- `uv` (recommended) or `pip`
 - FastAPI
-
+- `uv` (recommended) or `pip`
 
 ## Setup
 
-### Using `uv` (recommended)
+### Using `uv`
 
 From the project root:
 
@@ -59,15 +60,15 @@ cd src/fastapi_calculator
 uv run fastapi dev main.py
 ```
 
-The app will run at:
+Open the app in the browser:
 
 ```text
-http://127.0.0.1:8000
+http://127.0.0.1:8000/
 ```
 
 ### Using `pip`
 
-If you prefer pip, install the dependencies first:
+Install dependencies:
 
 ```bash
 pip install "fastapi[standard]"
@@ -80,49 +81,31 @@ cd src/fastapi_calculator
 python -m fastapi dev main.py
 ```
 
-## Usage
+## API Usage
 
-### Web UI
-
-Open the browser at:
-
-```text
-http://127.0.0.1:8000/
-```
-
-Use the calculator buttons to enter an expression such as:
-
-```text
-(10 + 5) * 2
-```
-
-### API Endpoint
-
-The app also exposes a REST API for calculating expressions.
-
-#### Endpoint
+### Endpoint
 
 ```http
 POST /calculate
 ```
 
-#### Request Body
+### Request Body
 
 ```json
 {
-  "expression": "10 + 5 * 2"
+  "expression": "(10 + 5) * 2"
 }
 ```
 
-#### Example Response
+### Example Response
 
 ```json
 {
-  "result": 20.0
+  "result": 30.0
 }
 ```
 
-#### Error Response
+### Error Example
 
 ```json
 {
@@ -130,18 +113,18 @@ POST /calculate
 }
 ```
 
-## Supported Operations
+## Example Expressions
 
-- `+` addition
-- `-` subtraction
-- `*` multiplication
-- `/` division
-- parentheses `(` and `)`
+```text
+10 + 5
+(20 - 8) / 2
+3 * (4 + 2)
+```
 
 ## Notes
 
-The backend evaluates expressions by parsing them into an abstract syntax tree (`ast`) and then applying the relevant arithmetic rules. This keeps the implementation simple and safe for basic calculator use.
+The calculator uses Python's `ast` module to parse and evaluate expressions safely for basic arithmetic operations. This makes it a lightweight backend evaluator without needing a full expression engine.
 
 ## License
 
-This project is intended for learning and local development use.
+This project is intended for learning and local development.
