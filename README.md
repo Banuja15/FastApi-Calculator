@@ -22,7 +22,7 @@ Fastapi_calculator/
 ├── src/
 │   └── fastapi_calculator/
 │       ├── __init__.py
-│       ├── main.py
+│       ├── application.py
 │       ├── service.py
 │       └── static/
 │           ├── index.html
