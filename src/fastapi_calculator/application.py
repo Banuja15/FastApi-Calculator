@@ -1,53 +1,31 @@
-import ast
+from fastapi import FastAPI
+from fastapi.exceptions import HTTPException
+from pydantic import BaseModel
+from fastapi_calculator.service import calculate
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 
-def evaluate(node):
+app=FastAPI()
+app.mount("/static",StaticFiles(directory="static"),"static")
+class CalculatorResponse(BaseModel):
+    result:float|int
 
-    # Number
-    if isinstance(node, ast.Constant):
-        if isinstance(node.value, (int, float)):
-            return node.value
+class CalculatorRequest(BaseModel):
+    expression: str
+    
 
-        raise ValueError("Invalid value")
+@app.get("/")
+def root():
+    return FileResponse("static/index.html") 
 
-    # Binary operations: + - * /
-    if isinstance(node, ast.BinOp):
-
-        left = evaluate(node.left)
-        right = evaluate(node.right)
-
-        if isinstance(node.op, ast.Add):
-            return left + right
-
-        elif isinstance(node.op, ast.Sub):
-            return left - right
-
-        elif isinstance(node.op, ast.Mult):
-            return left * right
-
-        elif isinstance(node.op, ast.Div):
-
-            if right == 0:
-                raise ZeroDivisionError
-
-            return left / right
-
-    # Negative / positive numbers
-    if isinstance(node, ast.UnaryOp):
-
-        operand = evaluate(node.operand)
-
-        if isinstance(node.op, ast.USub):
-            return -operand
-
-        elif isinstance(node.op, ast.UAdd):
-            return operand
-
-    raise ValueError("Invalid expression")
+    
+@app.post("/calculate",response_model=CalculatorResponse)
+def _calculate_(Req:CalculatorRequest):
+    try:
+        return {"result":calculate(Req.expression)}
+    except ZeroDivisionError:
+        raise HTTPException(400,"Cannot Divide By Zero")
 
 
-def calculate(expression: str):
 
-    tree = ast.parse(expression, mode="eval")
-
-    return evaluate(tree.body)
