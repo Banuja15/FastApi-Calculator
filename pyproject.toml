@@ -12,7 +12,7 @@ dependencies = [
 ]
 
 [project.scripts]
-fastapi-calculator = "fastapi_calculator:main"
+fastapi-calculator = "fastapi_calculator:application"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]

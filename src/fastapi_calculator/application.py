@@ -4,10 +4,12 @@ from pydantic import BaseModel
 from fastapi_calculator.service import calculate
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from pathlib import Path
 
 
 app=FastAPI()
-app.mount("/static",StaticFiles(directory="static"),"static")
+BASE_DIR = Path(__file__).resolve().parent
+app.mount("/static",StaticFiles(directory=BASE_DIR/"static"),"static")
 class CalculatorResponse(BaseModel):
     result:float|int
 
@@ -17,7 +19,7 @@ class CalculatorRequest(BaseModel):
 
 @app.get("/")
 def root():
-    return FileResponse("static/index.html") 
+    return FileResponse(BASE_DIR / "static" / "index.html") 
 
     
 @app.post("/calculate",response_model=CalculatorResponse)
